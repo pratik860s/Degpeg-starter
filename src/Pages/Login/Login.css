@@ -1,0 +1,129 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  .login-container {
+    display: flex;
+    flex-direction: row; /* Display children side by side */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to top left, #EB008B, #ffffff);
+  }
+  
+  /* Styling for the login poster */
+  .login-poster {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Styling for the login image */
+  .login-image-div {
+    margin-bottom: 20px;
+  }
+  
+  .login-image {
+    width: 300px;
+    height: 62vh;
+    border-radius: 10px 0 0 10px;
+    filter: brightness(50%);
+  }
+  
+  .h1-login {
+    font-size: 24px;
+    margin-bottom: 10px;
+    position: absolute;
+    top: 40%;
+    color: white;
+  }
+  .paragraph {
+    font-size: 14px;
+    color: #ffffff;
+    position: absolute;
+    width: 15%;
+    top: 47%;
+  }
+  
+  /* Styling for the login card */
+  .login-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 301px;
+    height: 62vh;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 0 10px 10px 0;
+    /* padding: 60px; */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Styling for the h1 inside the login card */
+  .login-card h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Styling for the input fields inside the login card */
+  .login-card input {
+    padding: 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styling for the login button */
+  .login-card button {
+    padding: 10px;
+    background-color: #f600a8;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Styling for the links inside the login card */
+  .login-card .link {
+    color: blue;
+    text-decoration: none;
+    margin-left: 5px;
+  }
+  
+  /* Styling for the paragraph below the login button */
+  .login-card p {
+    margin-top: 10px;
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .login-container{
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .login-card {
+      padding: 10px;
+      max-width: 300px;
+      height: 45vh;
+      border-radius: 10px 0px 10px 10px;
+    }
+  
+    .paragraph {
+      width: 50%;
+      padding: 0 10px;
+      top: 26%;
+    }
+
+    .h1-login {
+      top: 22%;
+  }
+    .login-image {
+      width: 300px;
+      height: 25vh;
+      border-radius: 10px 10px 0 0;
+      filter: brightness(50%);
+  }
+}

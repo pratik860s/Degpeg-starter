@@ -1,0 +1,154 @@
+/* ExpertSignup.css */
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+/* Container for the form */
+.expertSignup-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to top left, #eb008b, #ffffff);
+}
+
+.expertSignup-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 20rem;
+  height: 32.2rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 0 10px 10px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.expert-poster {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.expert-image {
+  width: 20rem;
+  height: 32.2rem;
+  border-radius: 10px 0 0 10px;
+  filter: brightness(50%);
+}
+
+.h1-expert {
+  font-size: 24px;
+  margin-bottom: 10px;
+  position: absolute;
+  top: 40%;
+  color: white;
+}
+
+/* Form headings */
+h2 {
+  color: #000000;
+  text-align: center;
+  font-weight: bolder;
+  margin: 20px;
+}
+
+/* Form inputs */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"],
+input[type="file"] {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* File input labels */
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+/* Buttons */
+.buttons {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: rgb(0, 153, 255); /* Magenta button */
+  color: white;
+  cursor: pointer;
+  margin: 10px;
+}
+
+.buttons:hover {
+  background-color: rgb(139, 203, 246); /* Darker magenta for hover effect */
+}
+
+.showButton {
+  padding: 5px;
+  border: none;
+  border-radius: 4px;
+  background-color: rgb(3, 154, 255); /* Magenta button */
+  color: white;
+  cursor: pointer;
+}
+.showButton:hover {
+  background-color: rgb(139, 203, 246);
+}
+
+/* Password mismatch message */
+p {
+  color: black;
+  text-align: center;
+}
+
+.password-input {
+  margin-left: 10px;
+}
+/* Responsive design */
+@media only screen and (max-width: 768px) {
+  .expertSignup-container {
+    flex-direction: column;
+  }
+  .expertSignup {
+    margin: 20px;
+    padding: 15px;
+  }
+  .expert-image {
+    width: 200px;
+    height: 20vh;
+    border-radius: 10px 10px 0 0;
+    filter: brightness(50%);
+  }
+  .expertSignup-card {
+    padding: 10px;
+    max-width: 200px;
+    height: 45vh;
+    border-radius: 0px 0px 10px 10px;
+  }
+  .password-input {
+    margin-left: -50px;
+  }
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"],
+  input[type="file"] {
+    padding: 5px;
+  }
+  .showButton {
+    padding: 2px;
+  }
+
+  .h1-expert {
+    font-size: 15px;
+    top: 24%;
+  }
+}
