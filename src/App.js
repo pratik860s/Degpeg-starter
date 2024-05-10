@@ -1,7 +1,7 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Login from './Pages/Login/Login';
-import ExpertSignup from './Pages/ExpertSignup/ExpertSignup';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./Pages/Login/Login";
+import ExpertSignup from "./Pages/ExpertSignup/ExpertSignup";
 
 const App = () => {
   return (
@@ -11,7 +11,6 @@ const App = () => {
         <Route path="/register/expert" element={<ExpertSignup />} />
       </Routes>
     </Router>
-
   );
 };
 
