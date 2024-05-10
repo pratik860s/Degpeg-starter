@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./Pages/Login/Login";
-import ExpertSignup from "./Pages/ExpertSignup/ExpertSignup";
+import ExpertSignup from "./Pages/LandingPages/ExpertSignup/ExpertSignup";
+import Loginx from "./Pages/LandingPages/Login/Loginx";
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Loginx />} />
         <Route path="/register/expert" element={<ExpertSignup />} />
       </Routes>
     </Router>
