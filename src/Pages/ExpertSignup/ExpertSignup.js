@@ -100,6 +100,12 @@ const ExpertSignup = () => {
     }
   };
 
+  const handleBack = () => {
+    if (level > 1) {
+      setLevel(level - 1);
+    }
+  };
+
   // Function to handle changes in the form inputs and update the form data state
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -115,7 +121,7 @@ const ExpertSignup = () => {
       bankAccountNumber: formData.bankAccountNumber,
       ifscCode: formData.ifscCode,
     });
-  
+
     if (error) {
       // Validation failed
       alert(error.details[0].message);
@@ -171,22 +177,22 @@ const ExpertSignup = () => {
           src={process.env.PUBLIC_URL + "/images/expert-poster.jpeg"}
           alt="poster"
         />
-        <h1 className="h1-expert">Become An Expert</h1>
-        <p className="paragraph">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua.
-        </p>
+        <h1 className="h1-expert">
+          Become An <br />
+          Expert
+        </h1>
+        <br />
       </div>
       <div className="expertSignup-card">
         <h2>Expert Registration</h2>
         {level === 1 && (
-          <div>
+          <div className="input-field">
             <input
               type="text"
               name="name"
               value={formData.name}
               onChange={handleChange}
-              placeholder="Business/Expert Name"
+              placeholder="Name"
               required
             />
             <input
@@ -194,7 +200,7 @@ const ExpertSignup = () => {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Business/Expert Email"
+              placeholder="Email"
               required
             />
             <input
@@ -202,7 +208,7 @@ const ExpertSignup = () => {
               name="contactNumber"
               value={formData.contactNumber}
               onChange={handleChange}
-              placeholder="Mobile number"
+              placeholder="Mobile Number"
               required
             />
             <input
@@ -210,12 +216,12 @@ const ExpertSignup = () => {
               name="location"
               value={formData.location}
               onChange={handleChange}
-              placeholder="Business/Expert Location"
+              placeholder="Location"
               required
             />
             <div
               className="password-input"
-              style={{ position: "relative", width: "fit-content" }}
+              style={{ position: "relative" }}
             >
               <input
                 type={showPassword ? "text" : "password"}
@@ -224,15 +230,15 @@ const ExpertSignup = () => {
                 onChange={handleChange}
                 placeholder="Create Password"
                 required
-                style={{ paddingRight: "10px", marginLeft: "57px" }}
+                style={{ paddingRight: "10px", width:"inherit" }}
               />
               <button
                 className="showButton"
                 onClick={togglePasswordVisibility}
                 style={{
                   position: "absolute",
-                  right: "6px",
-                  top: "6px",
+                  right: "-3px",
+                  top: "-5px",
                 }}
               >
                 {showPassword ? "Hide" : "Show"}
@@ -330,7 +336,12 @@ const ExpertSignup = () => {
             />
           </div>
         )}
-
+        <div className="down-button">
+        {level > 1 && (
+          <button className="buttons" onClick={handleBack}>
+            Previous
+          </button>
+        )}
         {level < 3 ? (
           <button className="buttons" onClick={handleNext}>
             Next
@@ -340,6 +351,7 @@ const ExpertSignup = () => {
             Submit
           </button>
         )}
+        </div>
       </div>
     </div>
   );
