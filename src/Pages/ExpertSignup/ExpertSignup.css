@@ -6,7 +6,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  overflow: hidden;
 }
 /* Container for the form */
 .expertSignup-container {
@@ -134,8 +133,7 @@ p {
     padding: 15px;
   }
   .expert-image {
-    /* width: 200px; */
-    height: 25vh;
+    height: 20%;
     border-radius: 10px 10px 0 0;
     filter: brightness(50%);
   }

@@ -1,23 +1,4 @@
-body {
-  background: linear-gradient(to top left, #eb008b, #ffffff);
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-button {
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  background-color: hsl(219, 100%, 46%); /* Magenta button */
-  color: white;
-  cursor: pointer;
-  margin: 10px;
-}
-button:hover{
-  background-color: rgb(112, 112, 255);
-}
 
 .login-card{
   display: flex;

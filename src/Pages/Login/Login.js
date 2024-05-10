@@ -18,7 +18,9 @@ import {
 } from "mdb-react-ui-kit";
 
 // Importing the CSS stylesheet for styling the component
+import "../../App.css";
 import "./Login.css";
+
 
 // Login component definition
 const Login = () => {
