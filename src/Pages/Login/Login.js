@@ -45,7 +45,7 @@ const Login = () => {
       console.error("Validation Error:", error.details[0].message);
       return; // Exit the function if validation fails
     }
-    const apiEndpoint = "http://43.204.221.144:3000/api/v1/user/login";
+    const apiEndpoint ="http://43.204.221.144:3000/api/v1/user/login";
 
     // Making a POST request using axios to submit the form data
     axios
