@@ -1,21 +1,56 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Joi from "joi";
 import "./ExpertSignup.css";
+import {expertRegister} from "./../../../Api/ApiConfig"
 
 const ExpertSignup = () => {
 
+  const [name,setName] = useState("");
   const [email,setEmail] = useState("");
-// all hooks
+  const [password,setPassword] = useState("");
+  const [contactNumber,setcontactNumber] = useState("");
+
+  const [location,setLocation] = useState("");
+  const [gst,setGst] = useState("");
+  const [bankName,setbankName] = useState("");
+  const [bankAccountNumber,setbankAccountNumber] = useState("");
+  const [ifscCode,setifscCode] = useState("");
+  // all hooks
 
 
   const emailHandler = (e)=>{
     setEmail(e.target.value);
   }
-
-
-  const handleRegistrationForm = ()=>{
+  const nameHandler = (e)=>{
+    setName(e.target.value);
+  }
+  const passwordHandler = (e)=>{
+    setPassword(e.target.value);
+  }
+  const contactNumberHandler = (e)=>{
+    setcontactNumber(e.target.value);
+  }
+  const gstHandler = (e)=>{
+    setGst(e.target.value);
+  }
+  const locationHandler = (e)=>{
+    setLocation(e.target.value);
+  }
+  const bankNameHandler = (e)=>{
+    setbankName(e.target.value);
+  }
+  const bankAccountNumberHandler = (e)=>{
+    setbankAccountNumber(e.target.value);
+  }
+  const ifscCodeHandler = (e)=>{
+    setifscCode(e.target.value);
+  }
+  
+  const handleRegistrationForm = async (e)=>{
     //calling registerExpert api
+    e.preventDefault();
+    console.log(name,email,password,contactNumber,location,gst,bankName,bankAccountNumber,ifscCode);
+    await expertRegister(name,email,password,contactNumber,location,gst,bankName,bankAccountNumber,ifscCode);
   }
 
   return (
@@ -27,16 +62,16 @@ const ExpertSignup = () => {
           <table>
             <tbody>
               <tr>
-                <td><input type="text" id="firstName" placeholder="First Name" /></td>
-                <td><input type="text" id="lastName" placeholder="Last Name" /></td>
+                <td><input type="text" onChange={nameHandler} id="Name" placeholder="First Name" /></td>
+                <td><input type="password" onChange={passwordHandler} id="password" placeholder="Password" /></td>
               </tr>
               <tr>
                 <td><input onChange={emailHandler} type="text" id="email" placeholder="Email" /></td>
-                <td><input type="text" id="mobile" placeholder="Mobile No." /></td>
+                <td><input onChange={contactNumberHandler} type="text" id="contactNumber" placeholder="contactNumber No." /></td>
               </tr>
               <tr>
-                <td><input type="text" id="location" placeholder="Location" /></td>
-                <td><input type="text" id="gst" placeholder="GST" /></td>
+                <td><input type="text" onChange={locationHandler} id="location" placeholder="Location" /></td>
+                <td><input type="text" onChange={gstHandler} id="gst" placeholder="GST" /></td>
               </tr>
               {/* <tr>
                 <td><label for="cancelledCheque">Cancelled Cheque</label></td>
@@ -47,11 +82,11 @@ const ExpertSignup = () => {
                 <td><input type="file" id="addressProof" accept="image/*" /></td>
               </tr> */}
               <tr>
-                <td><input type="text" id="bankBranch" placeholder="Bank/Branch Name" /></td>
-                <td><input type="text" id="accountNo" placeholder="Account No." /></td>
+                <td><input type="text" onChange={bankNameHandler} id="bankName" placeholder="Bank/Branch Name" /></td>
+                <td><input type="text" onChange={bankAccountNumberHandler} id="bankAccountNumber" placeholder="Account No." /></td>
               </tr>
               <tr>
-                <td><input type="text" id="ifsc" placeholder="IFSC Code" /></td>
+                <td><input type="text" onChange={ifscCodeHandler} id="ifscCode" placeholder="ifscCode Code" /></td>
               </tr>
             </tbody>
           </table>

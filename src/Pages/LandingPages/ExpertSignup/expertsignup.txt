@@ -29,7 +29,7 @@ const level2Schema = Joi.object({
 const level3Schema = Joi.object({
   bankName: Joi.string().required(),
   bankAccountNumber: Joi.string().required(),
-  ifscCode: Joi.string()
+  ifscCodeCode: Joi.string()
     .pattern(/^[A-Za-z]{4}0[A-Za-z0-9]{6}$/)
     .required(),
 });
@@ -50,7 +50,7 @@ const ExpertSignup = () => {
     // cancelledCheque: null,
     bankName: "",
     bankAccountNumber: "",
-    ifscCode: "",
+    ifscCodeCode: "",
   });
 
   // Function to toggle the visibility of the password
@@ -119,7 +119,7 @@ const ExpertSignup = () => {
     const { error } = level3Schema.validate({
       bankName: formData.bankName,
       bankAccountNumber: formData.bankAccountNumber,
-      ifscCode: formData.ifscCode,
+      ifscCodeCode: formData.ifscCodeCode,
     });
 
     if (error) {
@@ -211,7 +211,7 @@ const ExpertSignup = () => {
               name="contactNumber"
               value={formData.contactNumber}
               onChange={handleChange}
-              placeholder="Mobile Number"
+              placeholder="contactNumber Number"
               required
             />
             <input
@@ -331,10 +331,10 @@ const ExpertSignup = () => {
             />
             <input
               type="text"
-              name="ifscCode"
-              value={formData.ifscCode}
+              name="ifscCodeCode"
+              value={formData.ifscCodeCode}
               onChange={handleChange}
-              placeholder="Bank IFSC Code"
+              placeholder="Bank ifscCode Code"
               required
             />
           </div>
