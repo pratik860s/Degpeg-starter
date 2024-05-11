@@ -67,6 +67,10 @@ const Loginx = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+    if (!email || !password) {
+      alert("Please fill in all fields");
+      return;
+    }
     console.log(email, password);
     await login(email, password);
     setIsLogged(true);
@@ -114,6 +118,7 @@ const Loginx = () => {
               onChange={handlePasswordRegChange}
               type="password"
               placeholder="Password"
+              required
             />
             <button>Sign Up</button>
             <br></br>
@@ -141,11 +146,13 @@ const Loginx = () => {
               onChange={handleEmailChange}
               type="email"
               placeholder="Email"
+              required
             />
             <input
               onChange={handlePasswordChange}
               type="password"
               placeholder="Password"
+              required
             />
             <a href="#">Forget Your Password?</a>
             <button onClick={handleSignIn}>Sign In</button>
