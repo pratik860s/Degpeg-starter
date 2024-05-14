@@ -53,8 +53,10 @@ const expertRegister = async (
       }
     );
     console.log(response);
+    return response;
   } catch (error) {
     console.error("Error registering expert:", error);
+    return null;
   }
 };
 

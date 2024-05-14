@@ -236,6 +236,11 @@ body {
     transform: translateX(200%);
 }
 
+.error {
+    color: red;
+    font-size: 0.6rem;
+}
+
 @media screen and (max-width: 768px) {
     .container {
         width: 400px;

@@ -3,6 +3,8 @@ import "./style.css";
 import { useNavigate } from "react-router";
 import { login } from "../../../Api/ApiConfig";
 import LoggedInMessage from "./ThankYou";
+import Joi from 'joi';
+
 
 const Loginx = () => {
   const navigate = useNavigate();
@@ -16,6 +18,7 @@ const Loginx = () => {
   const [emailReg, setEmailReg] = useState("");
   const [passwordReg, setPasswordReg] = useState("");
   const [isLogged, setIsLogged] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleFirstNameChange = (event) => {
     setfNameReg(event.target.value);
@@ -65,16 +68,20 @@ const Loginx = () => {
 
 
 
+
   const handleSignIn = async (e) => {
     e.preventDefault();
-    if (!email || !password) {
-      alert("Please fill in all fields");
+    const errors = validateSignInForm({ email, password });
+    if (errors) {
+      setErrors(errors);
+      console.log(errors);
       return;
     }
     console.log(email, password);
     await login(email, password);
     setIsLogged(true);
-    navigate("/loggedin");  };
+    navigate("/loggedin");
+  };
 
   const expertLoginStyle = {
     color: "white",
@@ -91,6 +98,28 @@ const Loginx = () => {
     // navigate("/other-page");
   };
 
+
+  // JOI code begins
+
+  const signInSchema = Joi.object({
+    email: Joi.string().email({ tlds: { allow: false } }).required(),
+    password: Joi.string().min(6).required(),
+  });
+
+  const validateSignInForm = (data) => {
+    const { error } = signInSchema.validate(data);
+    if (!error) return null;
+
+    const errors = {};
+    for (let item of error.details) {
+      errors[item.path[0]] = item.message;
+    }
+    return errors;
+  };
+
+  
+
+
   return (
     <>
       <div className="container" id="container">
@@ -98,28 +127,32 @@ const Loginx = () => {
           <form>
             <h1>Create Account</h1>
             <br></br>
-            <span>or use your email for registeration</span>
+            <span>or use your email for registration</span>
             <input
               onChange={handleFirstNameChange}
               type="text"
               placeholder="First name"
             />
+            {errors && errors.firstName && <div className="error">{errors.firstName}</div>}
             <input
               onChange={handleLastNameChange}
               type="text"
               placeholder="Last name"
             />
+            {errors && errors.lastName && <div className="error">{errors.lastName}</div>}
             <input
               onChange={handleEmailRegChange}
               type="email"
               placeholder="Email"
             />
+            {errors && errors.email && <div className="error">{errors.email}</div>}
             <input
               onChange={handlePasswordRegChange}
               type="password"
               placeholder="Password"
               required
             />
+            {errors && errors.password && <div className="error">{errors.password}</div>}
             <button>Sign Up</button>
             <br></br>
             <span id="register-link">
@@ -148,12 +181,16 @@ const Loginx = () => {
               placeholder="Email"
               required
             />
+            {/* Display email validation error */}
+            {errors && errors.email && <div className="error">{errors.email}</div>}
             <input
               onChange={handlePasswordChange}
               type="password"
               placeholder="Password"
               required
             />
+            {/* Display password validation error */}
+            {errors && errors.password && <div className="error">{errors.password}</div>}
             <a href="#">Forget Your Password?</a>
             <button onClick={handleSignIn}>Sign In</button>
             <br></br>
@@ -166,18 +203,19 @@ const Loginx = () => {
           </form>
         </div>
         {isLogged && <LoggedInMessage isOpen={isLogged} onClose={handleModalClose} />}
-        <div class="toggle-container">
-          <div class="toggle">
-            <div class="toggle-panel toggle-left">
+        <div className="toggle-container">
+          <div className="toggle">
+            <div className="toggle-panel toggle-left">
               <h1>Hello!</h1>
             </div>
-            <div class="toggle-panel toggle-right">
+            <div className="toggle-panel toggle-right">
               <h1>Welcome Back!</h1>
             </div>
           </div>
         </div>
       </div>
     </>
+
   );
 };
 
