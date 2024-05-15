@@ -26,10 +26,12 @@ const expertRegister = async (
   password,
   contactNumber,
   location,
-  gst,
-  bankName,
-  bankAccountNumber,
-  ifscCode
+  linkedinUrl,
+  twitterUrl,
+  // gst,
+  // bankName,
+  // bankAccountNumber,
+  // ifscCode
 ) => {
   try {
     const response = await axios.post(
@@ -41,10 +43,12 @@ const expertRegister = async (
         name: name,
         contactNumber: contactNumber,
         location: location,
-        gst: gst,
-        bankName: bankName,
-        bankAccountNumber: bankAccountNumber,
-        ifscCode: ifscCode,
+        linkedinUrl:linkedinUrl,
+        twitterUrl: twitterUrl
+        // gst: gst,
+        // bankName: bankName,
+        // bankAccountNumber: bankAccountNumber,
+        // ifscCode: ifscCode,
       },
       {
         headers: {
@@ -60,4 +64,25 @@ const expertRegister = async (
   }
 };
 
-export { expertRegister, login };
+const sendOtpEmail = async (email) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}:${PORT}/api/v1/user/send-otp-email`,
+      { email: email },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true
+      }
+    );
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error("Error sending OTP email:", error);
+    return null;
+  }
+};
+
+
+export { expertRegister, login, sendOtpEmail };
