@@ -3,12 +3,10 @@ import "./style.css";
 import { useNavigate } from "react-router";
 import { login } from "../../../Api/ApiConfig";
 import LoggedInMessage from "./ThankYou";
-import Joi from 'joi';
-
+import Joi from "joi";
 
 const Loginx = () => {
   const navigate = useNavigate();
-
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -66,9 +64,6 @@ const Loginx = () => {
     };
   }, []);
 
-
-
-
   const handleSignIn = async (e) => {
     e.preventDefault();
     const errors = validateSignInForm({ email, password });
@@ -78,9 +73,24 @@ const Loginx = () => {
       return;
     }
     console.log(email, password);
-    await login(email, password);
-    setIsLogged(true);
-    navigate("/loggedin");
+    try {
+      const response = await login(email, password);
+      console.log("Response:", response);
+
+      if (response.status === 200) {
+        setIsLogged(true);
+        navigate("/loggedin");
+      } else if (response.data === 404) {
+        console.log("User not found");
+        setErrors("User not found. Please check your email and password.");
+
+      } else {
+        console.log("Login failed with status code:", response ? response.status : "unknown");
+        setErrors("User not found. Please check your email and password.");
+      }
+    } catch (error) {
+      console.error("Login failed:", error.message);
+    }
   };
 
   const expertLoginStyle = {
@@ -93,16 +103,17 @@ const Loginx = () => {
 
   const handleModalClose = () => {
     setIsLogged(false);
-    navigate("/")
+    navigate("/");
     // Additional logic to redirect if needed
     // navigate("/other-page");
   };
 
-
   // JOI code begins
 
   const signInSchema = Joi.object({
-    email: Joi.string().email({ tlds: { allow: false } }).required(),
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .required(),
     password: Joi.string().min(6).required(),
   });
 
@@ -117,9 +128,6 @@ const Loginx = () => {
     return errors;
   };
 
-  
-
-
   return (
     <>
       <div className="container" id="container">
@@ -133,26 +141,34 @@ const Loginx = () => {
               type="text"
               placeholder="First name"
             />
-            {errors && errors.firstName && <div className="error">{errors.firstName}</div>}
+            {errors && errors.firstName && (
+              <div className="error">{errors.firstName}</div>
+            )}
             <input
               onChange={handleLastNameChange}
               type="text"
               placeholder="Last name"
             />
-            {errors && errors.lastName && <div className="error">{errors.lastName}</div>}
+            {errors && errors.lastName && (
+              <div className="error">{errors.lastName}</div>
+            )}
             <input
               onChange={handleEmailRegChange}
               type="email"
               placeholder="Email"
             />
-            {errors && errors.email && <div className="error">{errors.email}</div>}
+            {errors && errors.email && (
+              <div className="error">{errors.email}</div>
+            )}
             <input
               onChange={handlePasswordRegChange}
               type="password"
               placeholder="Password"
               required
             />
-            {errors && errors.password && <div className="error">{errors.password}</div>}
+            {errors && errors.password && (
+              <div className="error">{errors.password}</div>
+            )}
             <button>Sign Up</button>
             <br></br>
             <span id="register-link">
@@ -182,7 +198,9 @@ const Loginx = () => {
               required
             />
             {/* Display email validation error */}
-            {errors && errors.email && <div className="error">{errors.email}</div>}
+            {errors && errors.email && (
+              <div className="error">{errors.email}</div>
+            )}
             <input
               onChange={handlePasswordChange}
               type="password"
@@ -190,10 +208,15 @@ const Loginx = () => {
               required
             />
             {/* Display password validation error */}
-            {errors && errors.password && <div className="error">{errors.password}</div>}
+            {errors && errors.password && (
+              <div className="error">{errors.password}</div>
+            )}
             <a href="#">Forget Your Password?</a>
             <button onClick={handleSignIn}>Sign In</button>
             <br></br>
+            {/* {errors && errors && (
+              <div className="error">{errors}</div>
+            )} */}
             <span id="register-link">
               Don't have an account?{" "}
               <a id="register" style={{ cursor: "pointer" }}>
@@ -202,7 +225,9 @@ const Loginx = () => {
             </span>
           </form>
         </div>
-        {isLogged && <LoggedInMessage isOpen={isLogged} onClose={handleModalClose} />}
+        {isLogged && (
+          <LoggedInMessage isOpen={isLogged} onClose={handleModalClose} />
+        )}
         <div className="toggle-container">
           <div className="toggle">
             <div className="toggle-panel toggle-left">
@@ -215,7 +240,6 @@ const Loginx = () => {
         </div>
       </div>
     </>
-
   );
 };
 

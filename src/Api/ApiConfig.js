@@ -15,6 +15,7 @@ const login = async (email, password) => {
       }
     );
     console.log(response);
+    return response;
   } catch (error) {
     console.error("Error logging in:", error);
   }
