@@ -9,7 +9,6 @@ import {
 import Joi from "joi";
 import { useNavigate } from "react-router";
 
-
 const ExpertSignup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -20,6 +19,7 @@ const ExpertSignup = () => {
   const [location, setLocation] = useState("");
   const [linkedinUrl, setlinkedinUrl] = useState("");
   const [twitterUrl, settwitterUrl] = useState("");
+  // const [submitBtnDisable, setSubmitBtnDisable] = useState(true);
   // const [gst, setGst] = useState("");
   // const [bankName, setbankName] = useState("");
   // const [bankAccountNumber, setbankAccountNumber] = useState("");
@@ -28,8 +28,6 @@ const ExpertSignup = () => {
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [resendButtonDisabled, setResendButtonDisabled] = useState(false);
   // const [expertRegistration, setExpertRegistration] = useState(false)
-
-
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState({});
@@ -104,27 +102,49 @@ const ExpertSignup = () => {
   const handleRegistrationForm = async (e) => {
     //calling registerExpert api
     e.preventDefault();
-    console.log(
-      name,
-      email,
-      password,
-      contactNumber,
-      location,
-      linkedinUrl,
-      twitterUrl
-    );
-    const response = await expertRegister(
-      name,
-      email,
-      password,
-      contactNumber,
-      location,
-      linkedinUrl,
-      twitterUrl
-    );
-    if (response.status===200){
-      navigate("/");
+    if(isOtpVerified){
+    const { error } = schemas[1].validate({ linkedinUrl, twitterUrl });
+    if (error) {
+      setErrors({
+        ...errors,
+        linkedinUrl:
+          error.details.find((detail) => detail.context.key === "linkedinUrl")
+            ?.message || "",
+        twitterUrl:
+          error.details.find((detail) => detail.context.key === "twitterUrl")
+            ?.message || "",
+      });
+      return;
     }
+
+    try {
+      console.log(
+        name,
+        email,
+        password,
+        contactNumber,
+        location,
+        linkedinUrl,
+        twitterUrl
+      );
+      const response = await expertRegister(
+        name,
+        email,
+        password,
+        contactNumber,
+        location,
+        linkedinUrl,
+        twitterUrl
+      );
+      if (response.status === 200) {
+        navigate("/");
+      } else {
+        console.log("Duplicate User Found");
+      }
+    } catch (error) {
+      console.log("Error in registering :", error);
+    }
+  }
   };
 
   const verifyOtpfunction = async (e) => {
@@ -132,21 +152,20 @@ const ExpertSignup = () => {
     try {
       const response = await verifyOtpEmail(email, verifyOtp);
       console.log(response);
-      if(response.status===200){
-      setIsOtpVerified(true);
+      if (response.status === 200) {
+        setIsOtpVerified(true);
       }
     } catch (error) {
       console.error("Error verifying OTP:", error);
     }
-  };  
-
+  };
 
   useEffect(() => {
     let timer;
     if (resendButtonDisabled) {
       timer = setTimeout(() => {
         setResendButtonDisabled(false);
-      }, 20000); // 20 seconds in milliseconds
+      }, 20000);
     }
     return () => clearTimeout(timer);
   }, [resendButtonDisabled]);
@@ -156,7 +175,6 @@ const ExpertSignup = () => {
     const response = await sendOtpEmail(email);
     setResendButtonDisabled(true);
   };
-
 
   const handleBack = (e) => {
     e.preventDefault();
@@ -169,7 +187,6 @@ const ExpertSignup = () => {
 
   const handleNext = async (e) => {
     e.preventDefault();
-
     if (step === 1) {
       const { error } = schemas[0].validate({
         name,
@@ -227,7 +244,15 @@ const ExpertSignup = () => {
     //     return;
     //   }
     // }
-    const response = await sendOtpEmail(email);
+
+    try {
+      const response = await sendOtpEmail(email);
+      if(response.status===200){
+        console.log("OTP sent successfully");
+      }
+    } catch (error) {
+      console.log("Error while sending OTP:", error);
+    }
     setStep(step + 1);
   };
 
@@ -322,48 +347,55 @@ const ExpertSignup = () => {
           ) : (
             <table>
               <tbody>
-              {!isOtpVerified && (
-        <>
-          <tr>
-            <td>
-              <div className="error">We have sent an OTP to your email : {email}</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <input
-                type="text"
-                onChange={otpHandler}
-                value={verifyOtp}
-                id="verifyOtp"
-                placeholder="Enter Email OTP"
-              />
-              <td>
-                <button className="otpBtn" onClick={verifyOtpfunction}>
-                  Verify OTP
-                </button>
-                <button
-                  className="otpBtn"
-                  onClick={handleResendOtp}
-                  disabled={resendButtonDisabled}
-                >
-                  Resend OTP
-                </button>
-              </td>
-              {errors.verifyOtp && (
-                <div className="error">{errors.verifyOtp}</div>
-              )}
-            </td>
-          </tr>
-        </>
-      )}
-      {isOtpVerified && (
-        <tr>
-          <td>
-            <div className="success">Your Email is Verified Successfully</div>
-          </td>
-        </tr>
-      )}
+                {!isOtpVerified && (
+                  <>
+                    <tr>
+                      <td>
+                        <div className="success">
+                          We have sent an OTP to your email <br/> {email}
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <input
+                          type="text"
+                          onChange={otpHandler}
+                          value={verifyOtp}
+                          id="verifyOtp"
+                          placeholder="Enter Email OTP"
+                        />
+                        <td>
+                          <button
+                            className="otpBtn"
+                            onClick={verifyOtpfunction}
+                          >
+                            Verify OTP
+                          </button>
+                          <button
+                            className="otpBtn"
+                            onClick={handleResendOtp}
+                            disabled={resendButtonDisabled}
+                          >
+                            Resend OTP
+                          </button>
+                        </td>
+                        {errors.verifyOtp && (
+                          <div className="error">{errors.verifyOtp}</div>
+                        )}
+                      </td>
+                    </tr>
+                  </>
+                )}
+                {isOtpVerified && (
+                  <tr>
+                    <td>
+                      <div className="success">
+                        Your Email is Verified Successfully
+                      </div>
+                    </td>
+                  </tr>
+                )}
                 <tr>
                   <td>
                     <input
