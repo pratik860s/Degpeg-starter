@@ -71,8 +71,7 @@ body {
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  margin-left: 12px;
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .container-expert button.hidden {
@@ -219,6 +218,12 @@ body {
   font-weight: 600;
   flex-direction: row;
   justify-content: center;
+}
+
+.resendBtn{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
 
 @keyframes shine {
