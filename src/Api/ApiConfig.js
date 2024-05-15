@@ -74,7 +74,6 @@ const sendOtpEmail = async (email) => {
         headers: {
           "Content-Type": "application/json",
         },
-        withCredentials: true
       }
     );
     console.log(response);
@@ -86,4 +85,25 @@ const sendOtpEmail = async (email) => {
 };
 
 
-export { expertRegister, login, sendOtpEmail };
+const verifyOtpEmail = async (email, otp) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}:${PORT}/api/v1/user/verify-otp-email`,
+      { email: email, otp: otp },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    // console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error verifying OTP email:", error.response ? error.response.data : error.message);
+    return null;
+  }
+};
+
+
+
+export { expertRegister, login, sendOtpEmail, verifyOtpEmail };

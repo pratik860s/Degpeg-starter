@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./ExpertSignup.css";
 import {
   expertRegister,
   sendOtpEmail,
+  verifyOtpEmail,
 } from "./../../../Api/ApiConfig";
 import Joi from "joi";
+import { useNavigate } from "react-router";
+
 
 const ExpertSignup = () => {
   const [name, setName] = useState("");
@@ -22,6 +25,12 @@ const ExpertSignup = () => {
   // const [bankAccountNumber, setbankAccountNumber] = useState("");
   // const [ifscCode, setifscCode] = useState("");
   const [step, setStep] = useState(1);
+  const [isOtpVerified, setIsOtpVerified] = useState(false);
+  const [resendButtonDisabled, setResendButtonDisabled] = useState(false);
+  // const [expertRegistration, setExpertRegistration] = useState(false)
+
+
+  const navigate = useNavigate();
 
   const [errors, setErrors] = useState({});
   // all hooks
@@ -39,7 +48,7 @@ const ExpertSignup = () => {
     }),
     Joi.object({
       linkedinUrl: Joi.string().uri().required(),
-      twitterUrl: Joi.string().uri(),
+      twitterUrl: Joi.string().uri().required(),
     }),
     // Joi.object({
     //   bankName: Joi.string().required(),
@@ -113,8 +122,40 @@ const ExpertSignup = () => {
       linkedinUrl,
       twitterUrl
     );
+    if (response.status===200){
+      navigate("/");
+    }
   };
 
+  const verifyOtpfunction = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await verifyOtpEmail(email, verifyOtp);
+      console.log(response);
+      if(response.status===200){
+      setIsOtpVerified(true);
+      }
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+    }
+  };  
+
+
+  useEffect(() => {
+    let timer;
+    if (resendButtonDisabled) {
+      timer = setTimeout(() => {
+        setResendButtonDisabled(false);
+      }, 20000); // 20 seconds in milliseconds
+    }
+    return () => clearTimeout(timer);
+  }, [resendButtonDisabled]);
+
+  const handleResendOtp = async (e) => {
+    e.preventDefault();
+    const response = await sendOtpEmail(email);
+    setResendButtonDisabled(true);
+  };
 
 
   const handleBack = (e) => {
@@ -122,6 +163,7 @@ const ExpertSignup = () => {
     if (step === 1) {
       return;
     }
+    setIsOtpVerified(false);
     setStep(step - 1);
   };
 
@@ -280,42 +322,48 @@ const ExpertSignup = () => {
           ) : (
             <table>
               <tbody>
-                <tr></tr>
-                <tr>
-                  <td>
-                    {
-                      <div className="error">
-                        We have sent an OTP to your email
-                      </div>
-                    }
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <input
-                      type="text"
-                      onChange={otpHandler}
-                      value={verifyOtp}
-                      id="verifyOtp"
-                      placeholder="Enter Email OTP"
-                    />
-                    {/* <td>
-                      <button className="otpBtn" >
-                        Verify OTP
-                      </button>
-                      <button
-                        className="otpBtn"
-                        // onClick={handleResendOtp}
-                        // disabled={resendButtonDisabled}
-                      >
-                        Resend OTP
-                      </button>
-                    </td> */}
-                    {/* {errors.verifyOtp && (
-                      <div className="error">{errors.verifyOtp}</div>
-                    )} */}
-                  </td>
-                </tr>
+              {!isOtpVerified && (
+        <>
+          <tr>
+            <td>
+              <div className="error">We have sent an OTP to your email : {email}</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input
+                type="text"
+                onChange={otpHandler}
+                value={verifyOtp}
+                id="verifyOtp"
+                placeholder="Enter Email OTP"
+              />
+              <td>
+                <button className="otpBtn" onClick={verifyOtpfunction}>
+                  Verify OTP
+                </button>
+                <button
+                  className="otpBtn"
+                  onClick={handleResendOtp}
+                  disabled={resendButtonDisabled}
+                >
+                  Resend OTP
+                </button>
+              </td>
+              {errors.verifyOtp && (
+                <div className="error">{errors.verifyOtp}</div>
+              )}
+            </td>
+          </tr>
+        </>
+      )}
+      {isOtpVerified && (
+        <tr>
+          <td>
+            <div className="success">Your Email is Verified Successfully</div>
+          </td>
+        </tr>
+      )}
                 <tr>
                   <td>
                     <input
