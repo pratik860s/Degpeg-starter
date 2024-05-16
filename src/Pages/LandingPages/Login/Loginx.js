@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { login } from "../../../Api/ApiConfig";
 import LoggedInMessage from "./ThankYou";
 import Joi from "joi";
+import { useLocation } from "react-router-dom";
 
 const Loginx = () => {
   const navigate = useNavigate();
@@ -17,6 +18,8 @@ const Loginx = () => {
   const [passwordReg, setPasswordReg] = useState("");
   const [isLogged, setIsLogged] = useState(false);
   const [errors, setErrors] = useState({});
+  const location = useLocation();
+  const [message, setMessage] = useState('');
 
   const handleFirstNameChange = (event) => {
     setfNameReg(event.target.value);
@@ -41,6 +44,17 @@ const Loginx = () => {
   const handlePasswordChange = (event) => {
     setPassword(event.target.value);
   };
+
+  useEffect(() => {
+    if (location.state && location.state.message) {
+      setMessage(location.state.message);
+      window.history.replaceState({}, document.title);
+    }
+    const timer = setTimeout(() => {
+      setMessage('');
+    }, 10000);
+    return () => clearTimeout(timer);
+  }, [location.state]);
 
   useEffect(() => {
     const container = document.getElementById("container");
@@ -83,9 +97,11 @@ const Loginx = () => {
       } else if (response.data === 404) {
         console.log("User not found");
         setErrors("User not found. Please check your email and password.");
-
       } else {
-        console.log("Login failed with status code:", response ? response.status : "unknown");
+        console.log(
+          "Login failed with status code:",
+          response ? response.status : "unknown"
+        );
         setErrors("User not found. Please check your email and password.");
       }
     } catch (error) {
@@ -104,8 +120,6 @@ const Loginx = () => {
   const handleModalClose = () => {
     setIsLogged(false);
     navigate("/");
-    // Additional logic to redirect if needed
-    // navigate("/other-page");
   };
 
   // JOI code begins
@@ -190,6 +204,9 @@ const Loginx = () => {
           <form>
             <h1>Sign In</h1>
             <br></br>
+            <div className="success">
+              {message && <p>{message}</p>}
+            </div>
             <span>or use your email password</span>
             <input
               onChange={handleEmailChange}

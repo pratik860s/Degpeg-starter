@@ -76,11 +76,11 @@ const sendOtpEmail = async (email) => {
         },
       }
     );
-    console.log(response);
+    // console.log(response);
     return response;
   } catch (error) {
-    console.error("Error sending OTP email:", error);
-    return null;
+    // console.error("Error sending OTP email:", error);
+    throw error;
   }
 };
 
@@ -100,7 +100,7 @@ const verifyOtpEmail = async (email, otp) => {
     return response.data;
   } catch (error) {
     console.error("Error verifying OTP email:", error.response ? error.response.data : error.message);
-    return null;
+    throw error;
   }
 };
 

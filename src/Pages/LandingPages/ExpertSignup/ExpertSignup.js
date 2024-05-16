@@ -28,6 +28,7 @@ const ExpertSignup = () => {
   const [resendButtonDisabled, setResendButtonDisabled] = useState(false);
   const [cursorStyle, setCursorStyle] = useState("not-allowed");
   const [backgroundClr, setBackgroundClr] = useState("#ffb7e1");
+  const [message,setMessage]=useState("");
 
   // const [expertRegistration, setExpertRegistration] = useState(false)
   const navigate = useNavigate();
@@ -149,7 +150,9 @@ const ExpertSignup = () => {
             twitterUrl
           );
           if (response.status === 200) {
-            navigate("/");
+            navigate("/", {
+              state: { message: "Your registration has been completed. Thank you" }
+            });            
           } else {
             console.log("Duplicate User Found");
           }
@@ -159,6 +162,7 @@ const ExpertSignup = () => {
       }
     } catch (error) {
       console.error("Error verifying OTP:", error);
+      setMessage("Invalid OTP");
     }
   };
 
@@ -253,10 +257,13 @@ const ExpertSignup = () => {
     try {
       const response = await sendOtpEmail(email);
       if (response.status === 200) {
+        console.log(response.data.data.message)
+        setMessage(response.data.data.message)
         console.log("OTP sent successfully");
       }
     } catch (error) {
-      console.log("Error while sending OTP:", error);
+      setMessage("Email Already Registered")
+      console.log(error.response.data.error);
     }
     setStep(step + 1);
   };
@@ -356,7 +363,7 @@ const ExpertSignup = () => {
                   <tr>
                     <td>
                       <div className="success">
-                        We have sent an OTP to your email <br /> {email}
+                        {message}
                       </div>
                     </td>
                   </tr>
